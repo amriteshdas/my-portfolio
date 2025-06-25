@@ -1,10 +1,12 @@
 :root {
-    --primary: #6C63FF;
-    --secondary: #FF6584;
-    --dark: #0a0a1f;
-    --light: #ffffff;
-    --gray: #94a3b8;
-    --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+  --primary: #7F5AF0;
+  --secondary: #2CB67D;
+  --dark: #0F0F1B;
+  --dark-glass: rgba(15, 15, 27, 0.6);
+  --light: #FFFFFF;
+  --gray: #94A3B8;
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
 }
 
 * {
@@ -13,17 +15,23 @@
     box-sizing: border-box;
     cursor: none;
 }
+html, body {
+  overflow-x: hidden;
+}
+
 
 html {
     scroll-behavior: smooth;
 }
 
 body {
+    margin: 0;
     font-family: 'Poppins', sans-serif;
     background-color: var(--dark);
     color: var(--light);
     line-height: 1.6;
     overflow-x: hidden;
+    width: 100%;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -65,15 +73,20 @@ h1, h2, h3, h4, h5, h6 {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 80%;
     z-index: 1000;
-    background: rgba(10, 10, 31, 0.8);
+    background: rgba(54, 54, 59, 0.356);
+    border: 1.5px, solid,rgba(255, 255, 255, 0.432);
     backdrop-filter: blur(10px);
+    border-radius: 50px;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 5px;
     transition: all 0.3s ease;
 }
 
 .navbar.scrolled {
-    background: rgba(10, 10, 31, 0.95);
+    background: rgba(15, 15, 27, 0.6);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 
@@ -431,7 +444,9 @@ section {
 .tech-item {
     text-align: center;
     padding: 2rem;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(38, 38, 41, 0.196);
+     backdrop-filter: blur(12px);
+    border: 1.5px, solid,rgba(255, 255, 255, 0.432);
     border-radius: 15px;
     transition: transform 0.3s ease;
 }
@@ -457,64 +472,165 @@ section {
 }
 
 /* Projects Section */
-.project-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
+
+
+.projects {
+  padding: 4rem 1rem;
+  text-align: center;
+}
+
+.section-title {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  background: var(--gradient);
+  background-clip: text;
+  color: transparent;
+}
+
+.carousel-wrapper {
+  overflow: hidden;
+  cursor: grab;
+  position: relative;
+}
+
+.carousel-wrapper:active {
+  cursor: grabbing;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  will-change: transform;
 }
 
 .project-card {
-    position: relative;
-    border-radius: 15px;
-    overflow: hidden;
-    transform-style: preserve-3d;
-    transform: perspective(1000px);
+  flex: 0 0 280px;
+  background: rgba(38, 38, 41, 0.196);
+  border: 1.5px, solid,rgba(255, 255, 255, 0.432);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  transition: transform 0.3s ease;
 }
 
-.project-card:hover .project-content {
-    opacity: 1;
-    transform: translateY(0);
+.project-card:hover {
+  transform: scale(1.03);
 }
 
 .project-image {
-    width: 100%;
-    height: 250px;
-    object-fit: cover;
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
 }
 
 .project-content {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 2rem;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.938), transparent);
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.3s ease;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  height: calc(380px - 160px);
 }
 
 .project-title {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-    background: var(--gradient);
-    border-radius: 15px;
-    text-align: center;
-    
+  font-size: 1.2rem;
+  background: var(--gradient);
+  background-clip: text;
+  color: transparent;
 }
 
-.project-tags {
+.project-description {
+  font-size: 0.9rem;
+  color: var(--gray);
+  flex: 1;
+}
+
+.project-buttons {
+  display: flex;
+  gap: 0.5rem;
+  
+}
+
+.project-button {
+  display: flex;
+  flex: 1;
+  padding: 0.6rem 0;
+  background: rgba(0, 0, 0, 0);
+  border: 1.5px, solid,rgba(255, 255, 255, 0.432);
+  border-radius: 25px;
+  color: var(--light);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.9rem;
+  justify-content: center;
+  align-items: center;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+.project-button-icon{
     display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
+    height: 50px;
+    width: 50px;
+    border: 1.5px, solid,rgba(255, 255, 255, 0.432);
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    color: var(--light);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 2rem;
+    transition: background 0.3s ease, transform 0.2s ease;
 }
 
-.project-tag {
-    padding: 0.25rem 0.75rem;
-    background: var(--primary);
-    border-radius: 15px;
-    font-size: 0.875rem;
+.project-button:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, var(--secondary), var(--primary));
 }
+.project-button-icon:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, var(--secondary), var(--primary));
+}
+
+.carousel-wrapper {
+  overflow: hidden;
+  width: 100%;
+  cursor: grab;
+  position: relative;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 1rem;
+  will-change: transform;
+  flex-wrap: nowrap;
+}
+
+
+
+@media (max-width: 768px) {
+  .project-card {
+    flex: 0 0 220px;
+  }
+}
+
+@media (max-width: 480px) {
+  .project-card {
+    flex: 0 0 190px;
+  }
+
+  .project-title {
+    font-size: 1rem;
+  }
+
+  .project-description {
+    font-size: 0.8rem;
+  }
+}
+
+
+
+
+
 
 /* Skills Section */
 .skills-grid {
@@ -526,7 +642,9 @@ section {
 .skill-card {
     text-align: center;
     padding: 2rem;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(54, 54, 54, 0.397);
+    border: 1.5px, solid,rgba(255, 255, 255, 0.432);
+     backdrop-filter: blur(12px);
     border-radius: 15px;
     transition: all 0.3s ease;
 }
@@ -699,7 +817,7 @@ section {
         top: 70px;
         left: 0;
         width: 100%;
-        background: rgba(10, 10, 31, 0.95);
+        background: rgba(15, 15, 27, 0.6);
         flex-direction: column;
         align-items: center;
         padding: 2rem 0;
