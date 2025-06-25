@@ -109,27 +109,87 @@ const textArray = [
 startTextAnimation(0);
 
 
-// Project Data
-const projects = [
-    {
-        title: "Recipe Finder App",
-        description: "Discover delicious recipes instantly by searching with ingredients you already have!",
-        image: "rf.png",
-        tags: ["HTML", "CSS", "JavaScript", "Edamam API"]
-    },
-    {
-        title: "Weather App",
-        description: "A responsive web application that provides real-time weather updates for any location worldwide.",
-        image: "wa.png",
-        tags: ["HTML", "CSS", "JavaScript", "OpenWeatherMap API"]
-    },
-    {
-        title: "My Portfolio",
-        description: "A personal website showcasing my skills, projects, and achievements in web development",
-        image: "pf.png",
-        tags: ["HTML", "CSS", "JavaScript"]
+// Project
+const track = document.querySelector('.carousel-track');
+track.innerHTML += track.innerHTML; // clone the cards to allow smooth infinite scroll
+
+document.addEventListener("DOMContentLoaded", () => {
+  const track = document.getElementById("carousel-track");
+  // Duplicate for seamless infinite scroll
+  track.innerHTML += track.innerHTML;
+
+  const wrapper = track.parentElement;
+  let isDragging = false,
+      startX = 0,
+      scrollStart = 0;
+
+  // Auto scroll settings
+  let autoScroll = true,
+      autoSpeed = 0.5; // pixels per frame
+
+  function step() {
+    if (autoScroll && !isDragging) {
+      wrapper.scrollLeft += autoSpeed;
+      // Reset scroll position for seamless loop
+      if (wrapper.scrollLeft >= track.scrollWidth / 2) {
+        wrapper.scrollLeft = 0;
+      }
     }
-];
+    requestAnimationFrame(step);
+  }
+  step();
+
+  // Mouse drag
+  wrapper.addEventListener("mousedown", e => {
+    isDragging = true;
+    autoScroll = false;
+    startX = e.pageX - wrapper.offsetLeft;
+    scrollStart = wrapper.scrollLeft;
+  });
+
+  wrapper.addEventListener("mouseup", () => {
+    isDragging = false;
+    autoScroll = true;
+  });
+
+  wrapper.addEventListener("mouseleave", () => {
+    isDragging = false;
+    autoScroll = true;
+  });
+
+  wrapper.addEventListener("mousemove", e => {
+    if (!isDragging) return;
+    const x = e.pageX - wrapper.offsetLeft;
+    const walk = (startX - x);
+    wrapper.scrollLeft = scrollStart + walk;
+  });
+
+  // Mobile touch support
+  let touchStartX = 0,
+      touchStartScroll = 0;
+
+  wrapper.addEventListener("touchstart", e => {
+    isDragging = true;
+    autoScroll = false;
+    touchStartX = e.touches[0].pageX;
+    touchStartScroll = wrapper.scrollLeft;
+  });
+
+  wrapper.addEventListener("touchend", () => {
+    isDragging = false;
+    autoScroll = true;
+  });
+
+  wrapper.addEventListener("touchmove", e => {
+    if (!isDragging) return;
+    const x = e.touches[0].pageX;
+    const walk = touchStartX - x;
+    wrapper.scrollLeft = touchStartScroll + walk;
+  });
+});
+
+
+
 
 // Skills Data
 const skills = [
@@ -143,21 +203,7 @@ const skills = [
 ];
 
 // Render Projects
-function renderProjects() {
-    const projectGrid = document.querySelector('.project-grid');
-    projectGrid.innerHTML = projects.map(project => `
-        <div class="project-card">
-            <img src="${project.image}" alt="${project.title}" class="project-image">
-            <div class="project-content">
-                <h3 class="project-title">${project.title}</h3>
-                <p class="project-description">${project.description}</p>
-                <div class="project-tags">
-                    ${project.tags.map(tag => `<span class="project-tag">${tag}</span>`).join('')}
-                </div>
-            </div>
-        </div>
-    `).join('');
-}
+
 
 // Render Skills
 function renderSkills() {
@@ -185,28 +231,7 @@ function reveal() {
     });
 }
 
-// 3D Card Effect
-function handle3DCardEffect() {
-    document.querySelectorAll('.project-card').forEach(card => {
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            
-            const rotateX = (y - centerY) / 10;
-            const rotateY = (centerX - x) / 10;
-            
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-        });
-        
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
-        });
-    });
-}
+
 
 // Navbar Scroll Effect
 window.addEventListener('scroll', () => {
@@ -247,9 +272,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
-    renderProjects();
     renderSkills();
-    handle3DCardEffect();
     startTextAnimation(0);
     
     function handleButtonHover() {
